@@ -60,4 +60,8 @@ class Matrix
     (from_column < @matrix_x) && (to_column <= @matrix_x) && (row <= @matrix_y)
   end
 
+  def image_size_error
+    puts "Image's size is #{@matrix_x}x#{@matrix_y}. Try again!"
+  end
+
 end
