@@ -19,6 +19,8 @@ class BitmapEditor
     case @command
     when 'I'
       @matrix = Matrix.new(*sequence)
+    when 'L'
+      @matrix.colour_pixel(*sequence)
     when 'S'
       @matrix.show_matrix
     when '?'
