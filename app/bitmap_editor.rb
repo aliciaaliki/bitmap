@@ -17,30 +17,47 @@ class BitmapEditor
     @sequenceOfCommand = input.split(' ')
     @command = @sequenceOfCommand.shift
 
-    *sequence = @sequenceOfCommand.map{ |s| ( s == '0' || s.to_i != 0 ) ? s.to_i : s}
     if valid_input?(input)
+      *sequence = @sequenceOfCommand.map{ |s| ( s == '0' || s.to_i != 0 ) ? s.to_i : s} # Rewrite it
+
       case @command
       when 'I'
         @matrix = Matrix.new(*sequence)
-      when 'L'
-        @matrix.colour_pixel(*sequence)
-      when 'V'
-        @matrix.add_colour_vertical(*sequence) 
-      when 'H'
-        @matrix.add_colour_horizontal(*sequence)
-      when 'S'
-        @matrix.show_matrix
       when '?'
-        show_help
+        display_help
       when 'X'
         exit_console
+      when 'C','L','V','H','S'
+        image_processing(*sequence)
       else
         puts "Don't recongnise input"
       end
     else
       puts @error
     end
+  end
 
+  def image_processing(*sequence)
+    if image_exists?
+      case @command
+      when 'C'
+        @matrix.clear_image 
+      when 'L'
+        success = @matrix.colour_pixel(*sequence)
+      when 'V'
+        success = @matrix.add_colour_vertical(*sequence) 
+      when 'H'
+        success = @matrix.add_colour_horizontal(*sequence) 
+      when 'S'
+        success = @matrix.show_matrix
+      end
+    else
+      puts @error
+    end
+
+    unless success
+      puts @matrix.image_size_error
+    end
   end
 
   ###########
@@ -64,14 +81,23 @@ class BitmapEditor
 
   def invalid_sequenceOfCommands?
     (CHARS_WITHOUT_SEQUENCE.include? @command) && (@sequenceOfCommand.count != 0) || 
-    (@command == "I" && (@sequenceOfCommand.count != 2)) ||
-    (@command == "L" && (@sequenceOfCommand.count != 3)) ||
-    (@command == "V" && (@sequenceOfCommand.count != 4)) ||
-    (@command == "H" && (@sequenceOfCommand.count != 4))
+    (@command == "I" && (@sequenceOfCommand.count != 2)) || # I 5 6
+    (@command == "L" && (@sequenceOfCommand.count != 3)) || # L 2 3 A
+    (@command == "V" && (@sequenceOfCommand.count != 4)) || # V 2 3 6 W
+    (@command == "H" && (@sequenceOfCommand.count != 4))    # H 3 5 2 Z
   end
 
   def invalid_numbers?
     @sequenceOfCommand.any?{ |s| s == '0' || s.to_i > 250 || s.to_i < 0}
+  end
+
+  def image_exists?
+    if @matrix 
+      true 
+    else
+      @error = "Draw an image first, ex 'I 5 6'"
+      false
+    end
   end
 
   def show_help

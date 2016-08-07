@@ -61,7 +61,7 @@ class Matrix
   end
 
   def image_size_error
-    puts "Image's size is #{@matrix_x}x#{@matrix_y}. Try again!"
+    "Image's size is #{@matrix_x}x#{@matrix_y}. Try again!"
   end
 
 end
