@@ -27,17 +27,10 @@ describe 'Matrix' do
   it "Colours the pixel (X,Y) with colour C" do
     expected_image = [['F', 'G', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O'], ['O', 'A', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'W']]
 
-    success = @image.colour_pixel(5,6,'W')
-    expect(success).to be true
-
-    success = @image.colour_pixel(1,1,'F')
-    expect(success).to be true
-
-    success = @image.colour_pixel(2,1,'G')
-    expect(success).to be true
-
-    success = @image.colour_pixel(2,3,'A')
-    expect(success).to be true
+    @image.colour_pixel(5,6,'W')
+    @image.colour_pixel(1,1,'F')
+    @image.colour_pixel(2,1,'G')
+    @image.colour_pixel(2,3,'A')
 
     expect(@image.matrix).to eq expected_image
   end
@@ -45,21 +38,16 @@ describe 'Matrix' do
   it "stays unchanged if pixel is out of range" do
     initial_image = [['O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O']]
 
-    success = @image.colour_pixel(6,6,'W')
+    @image.colour_pixel(6,6,'W')
     expect(@image.matrix).to eq initial_image
-
-    expect(success).to be false
   end
 
   # V X Y1 Y2 C - Draw a vertical segment of colour C in column X between rows Y1 and Y2 (inclusive).
   it "draws a vertical segment of colour 'C' in column X between rows Y1 and Y2 (inclusive)" do
     expected_image = [['O', 'O', 'O', 'O', 'F'], ['O', 'O', 'O', 'O', 'F'], ['O', 'W', 'O', 'O', 'F'], ['O', 'W', 'O', 'O', 'F'], ['O', 'W', 'O', 'O', 'F'], ['O', 'W', 'O', 'O', 'F']]
     
-    success = @image.add_colour_vertical(2,3,6,"W")
-    expect(success).to be true
-
-    success = @image.add_colour_vertical(5,1,6,"F")
-    expect(success).to be true
+    @image.add_colour_vertical(2,3,6,"W")
+    @image.add_colour_vertical(5,1,6,"F")
 
     expect(@image.matrix).to eq expected_image
   end
@@ -67,9 +55,7 @@ describe 'Matrix' do
   it "stays unchanged if vertical segment is out of range" do
     initial_image = [['O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O']]
 
-    success = @image.add_colour_vertical(2,4,7,"R")
-    expect(success).to be false
-
+    @image.add_colour_vertical(2,4,7,"R")
     expect(@image.matrix).to eq initial_image
   end
 
@@ -77,11 +63,8 @@ describe 'Matrix' do
   it "draws a horizontal segment of colour 'A' in row Y between columns X1 and X2 (inclusive)" do
     expected_image = [['O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O'], ['A', 'A', 'A', 'A', 'A'], ['O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'B', 'B']]
 
-    success = @image.add_colour_horizontal(1,5,3,'A')
-    expect(success).to be true
-
-    success = @image.add_colour_horizontal(4,5,6,'B')
-    expect(success).to be true
+    @image.add_colour_horizontal(1,5,3,'A')
+    @image.add_colour_horizontal(4,5,6,'B')
 
     expect(@image.matrix).to eq expected_image
   end
@@ -89,9 +72,7 @@ describe 'Matrix' do
   it "stays unchanged if horizontal segment is out of range" do
     initial_image = [['O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O']]
 
-    success = @image.add_colour_horizontal(2,8,7,"R")
-    expect(success).to be false
-
+    @image.add_colour_horizontal(2,8,7,"R")
     expect(@image.matrix).to eq initial_image
   end
 

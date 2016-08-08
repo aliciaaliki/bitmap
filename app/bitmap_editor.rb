@@ -1,6 +1,7 @@
 class BitmapEditor
   attr_reader :error
 
+  CHARS_WITH_SEQUENCE = %w(I L V H)
   CHARS_WITHOUT_SEQUENCE = %w(C S ? X)
 
   def run
@@ -18,45 +19,28 @@ class BitmapEditor
     @command = @sequenceOfCommand.shift
 
     if valid_input?(input)
-      *sequence = @sequenceOfCommand.map{ |s| ( s == '0' || s.to_i != 0 ) ? s.to_i : s} # Rewrite it
+      *sequence = @sequenceOfCommand.map{ |s| ( s == '0' || s.to_i != 0 ) ? s.to_i : s}
 
       case @command
       when 'I'
         @matrix = Matrix.new(*sequence)
       when '?'
-        display_help
+        show_help
       when 'X'
         exit_console
-      when 'C','L','V','H','S'
-        image_processing(*sequence)
-      else
-        puts "Don't recongnise input"
-      end
-    else
-      puts @error
-    end
-  end
-
-  def image_processing(*sequence)
-    if image_exists?
-      case @command
       when 'C'
-        @matrix.clear_image 
+        @matrix.clear_matrix if image_exists?
       when 'L'
-        success = @matrix.colour_pixel(*sequence)
+        @matrix.colour_pixel(*sequence) if image_exists?
       when 'V'
-        success = @matrix.add_colour_vertical(*sequence) 
+        @matrix.add_colour_vertical(*sequence) if image_exists?
       when 'H'
-        success = @matrix.add_colour_horizontal(*sequence) 
+        @matrix.add_colour_horizontal(*sequence) if image_exists?
       when 'S'
-        success = @matrix.show_matrix
+        @matrix.show_matrix if image_exists?
       end
     else
       puts @error
-    end
-
-    unless success
-      puts @matrix.image_size_error
     end
   end
 
@@ -65,30 +49,57 @@ class BitmapEditor
   ###########
 
   def valid_input?(input)
-    if input.empty?
+    case
+    when input.empty?
       @error = "Empty input! Please check help for more information"
       false
-    elsif invalid_sequenceOfCommands?
-      @error = "Wrong sequence in input! Please check help for more information"
+    when unexpectedInput?
+      @error =  "Don't recognise input. Please check help for more information"
       false
-    elsif invalid_numbers?
+    when invalid_numbers?
       @error = "Please enter a number between 1-250"
       false
+    when (@command == "I" && !valid_I_sequence?) || 
+         (@command == "L" && !valid_L_sequence?) ||
+         ((@command == "V" || @command == "H") && !valid_V_H_sequence?) ||
+         ((CHARS_WITHOUT_SEQUENCE.include? @command) && !valid_chars_without_sequence?)
+            @error =  "Wrong sequence in input! Please check help for more information"
+            false
     else
       true
     end
   end
 
-  def invalid_sequenceOfCommands?
-    (CHARS_WITHOUT_SEQUENCE.include? @command) && (@sequenceOfCommand.count != 0) || 
-    (@command == "I" && (@sequenceOfCommand.count != 2)) || # I 5 6
-    (@command == "L" && (@sequenceOfCommand.count != 3)) || # L 2 3 A
-    (@command == "V" && (@sequenceOfCommand.count != 4)) || # V 2 3 6 W
-    (@command == "H" && (@sequenceOfCommand.count != 4))    # H 3 5 2 Z
+  def unexpectedInput?
+    !(CHARS_WITH_SEQUENCE.include? @command) && !(CHARS_WITHOUT_SEQUENCE.include? @command)
+  end
+
+  def valid_I_sequence?
+    @sequenceOfCommand.count == 2 && isNumber?(@sequenceOfCommand)
+  end
+
+  def valid_L_sequence?
+    @sequenceOfCommand.count == 3 && isNumber?(@sequenceOfCommand[0..1]) && isCapitalChar?(@sequenceOfCommand.last)
+  end
+
+  def valid_V_H_sequence?
+    @sequenceOfCommand.count == 4 && isNumber?(@sequenceOfCommand[0..2]) && isCapitalChar?(@sequenceOfCommand.last)
+  end
+
+  def valid_chars_without_sequence?
+    @sequenceOfCommand.count == 0
   end
 
   def invalid_numbers?
-    @sequenceOfCommand.any?{ |s| s == '0' || s.to_i > 250 || s.to_i < 0}
+    @sequenceOfCommand.any?{ |s| s.to_i > 250 || s.to_i < 0}
+  end
+
+  def isCapitalChar?(x)
+    !x.match(/[^A-Z]/)
+  end
+
+  def isNumber?(array)
+    array.all?{ |a| a.to_i.to_s == a }
   end
 
   def image_exists?

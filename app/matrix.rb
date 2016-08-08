@@ -22,9 +22,8 @@ class Matrix
   def colour_pixel(x, y, colour)
     if pixel_within_range?(x, y)
       @matrix[y - 1][x - 1] = colour
-      true
     else
-      false
+      image_size_error
     end
   end
 
@@ -38,9 +37,8 @@ class Matrix
         row = @matrix[i-1]
         row[column-1] = colour
       end
-      true
     else
-      false
+      image_size_error
     end
   end
 
@@ -55,9 +53,8 @@ class Matrix
       for i in from_column..to_column
         row_array[i-1] = colour
       end
-      true
     else
-      false
+      image_size_error
     end
   end
 
@@ -66,7 +63,7 @@ class Matrix
   end
 
   def image_size_error
-    "Image's size is #{@matrix_x}x#{@matrix_y}. Try again!"
+    puts "Image's size is #{@matrix_x}x#{@matrix_y}. Try again!"
   end
 
 end
