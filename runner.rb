@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
 require './app/bitmap_editor'
-require './app/matrix'
+require './app/image'
 
 BitmapEditor.new.run

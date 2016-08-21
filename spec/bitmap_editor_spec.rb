@@ -6,132 +6,79 @@ describe 'Bitmap_Editor' do
     @bitmap = BitmapEditor.new
   end
 
-  it "validates empty input with error" do
+  it "returns error message for empty input" do
     input = ""
+    expect(STDOUT).to receive(:puts).with('Not recognised input. Press ? to show help.')
     @bitmap.command_manager(input)
-    expect(@bitmap.error).to eq("Empty input! Please check help for more information")
   end
 
   it "returns error message for unexpected input" do
-    input = "AA"
+    input = "AA BB rty"
+    expect(STDOUT).to receive(:puts).with('Not recognised input. Press ? to show help.')
     @bitmap.command_manager(input)
-    expect(@bitmap.error).to eq("Don't recognise input. Please check help for more information")
   end
 
-  it "validates input successfully" do
-    input = "I 5 6"
-    @bitmap.command_manager(input)
-    expect(@bitmap.error).to be nil
-  end
-
-  it "validates invalid sequence with error" do
-    input = "I"
-    @bitmap.command_manager(input)
-    expect(@bitmap.error).to eq("Wrong sequence in input! Please check help for more information")
-  end
-
-  it "validates invalid sequence with error" do
-    input = "I 10 10 EEE"
-    @bitmap.command_manager(input)
-    expect(@bitmap.error).to eq("Wrong sequence in input! Please check help for more information")
-  end
-
-  it "validates input with error for size" do
-    input = "I 400 400"
-    @bitmap.command_manager(input)
-    expect(@bitmap.error).to eq("Please enter a number between 1-250")
-  end
-
-  it "validates invalid sequence with error" do
-    input = "L 40 40 40"
-    @bitmap.command_manager(input)
-    expect(@bitmap.error).to eq("Wrong sequence in input! Please check help for more information")
-  end
-
-  it "validates input successfully" do
-    input = "I 5 6"
-    @bitmap.command_manager(input)
-    input = "L 5 6 X"
-    @bitmap.command_manager(input)
-    expect(@bitmap.error).to be nil
-  end
+  # # L sequence
 
   it "returns error when there is no image" do
     input = "L 5 6 X"
+    expect(STDOUT).to receive(:puts).with("#{Error.no_image}#{"\n"}Press ? to show help.")
     @bitmap.command_manager(input)
-    expect(@bitmap.error).to eq("Draw an image first, ex 'I 5 6'")
   end
 
-  it "validates input successfully" do
-    input = "I 5 6"
+  # V sequence
+
+  it "returns error when there is no image" do
+    input = "V 2 5 6 X"
+    expect(STDOUT).to receive(:puts).with("#{Error.no_image}#{"\n"}Press ? to show help.")
     @bitmap.command_manager(input)
-    input = "V 2 3 6 X"
-    @bitmap.command_manager(input)
-    expect(@bitmap.error).to be nil
   end
 
-  it "validates invalid sequence with error" do
-    input = "V 40 40 40"
+  # H sequence
+
+  it "returns error when there is no image" do
+    input = "H 2 5 6 X"
+    expect(STDOUT).to receive(:puts).with("#{Error.no_image}#{"\n"}Press ? to show help.")
     @bitmap.command_manager(input)
-    expect(@bitmap.error).to eq("Wrong sequence in input! Please check help for more information")
   end
 
-  it "validates input successfully" do
-    input = "I 5 6"
+  # S sequence
+
+  it "returns error when there is no image" do
+    input = "S"
+    expect(STDOUT).to receive(:puts).with("#{Error.no_image}#{"\n"}Press ? to show help.")
     @bitmap.command_manager(input)
-    input = "H 2 6 1 X"
-    @bitmap.command_manager(input)
-    expect(@bitmap.error).to be nil
   end
 
-  it "validates invalid sequence with error" do
-    input = "H 40"
+  # C sequence
+
+  it "returns error when there is no image" do
+    input = "C"
+    expect(STDOUT).to receive(:puts).with("#{Error.no_image}#{"\n"}Press ? to show help.")
     @bitmap.command_manager(input)
-    expect(@bitmap.error).to eq("Wrong sequence in input! Please check help for more information")
   end
 
-  it "validates input successfully" do
+  # X sequence
+
+  it "validates X input successfully" do
     input = "X"
+    expect(STDOUT).to receive(:puts).with("Goodbye!")
     @bitmap.command_manager(input)
-    expect(@bitmap.error).to be nil
   end
 
-  it "returns error message for unexpected input" do
-    input = "X 10"
+  # ? sequence
+
+  it "validates ? input successfully" do
+    input = "?"
+    expect(STDOUT).to receive(:puts).with("? - Help 
+                    I M N - Create a new M x N image with all pixels coloured white (O).
+                    C - Clears the table, setting all pixels to white (O).
+                    L X Y C - Colours the pixel (X,Y) with colour C.
+                    V X Y1 Y2 C - Draw a vertical segment of colour C in column X between rows Y1 and Y2 (inclusive).
+                    H X1 X2 Y C - Draw a horizontal segment of colour C in row Y between columns X1 and X2 (inclusive).
+                    S - Show the contents of the current image
+                    X - Terminate the session")
     @bitmap.command_manager(input)
-    expect(@bitmap.error).to eq("Wrong sequence in input! Please check help for more information")
   end
-
-  it "returns error when there is no image" do
-    input = "S"
-    @bitmap.command_manager(input)
-    expect(@bitmap.error).to eq("Draw an image first, ex 'I 5 6'")
-  end
-
-  it "validates input successfully" do
-    input = "I 5 6"
-    @bitmap.command_manager(input)
-    input = "S"
-    @bitmap.command_manager(input)
-    expect(@bitmap.error).to be nil
-  end
-
-  it "returns error when there is no image" do
-    input = "C"
-    @bitmap.command_manager(input)
-    expect(@bitmap.error).to eq("Draw an image first, ex 'I 5 6'")
-  end
-
-  it "validates input successfully" do
-    input = "I 5 6"
-    @bitmap.command_manager(input)
-    input = "H 2 6 1 X"
-    @bitmap.command_manager(input)
-    input = "C"
-    @bitmap.command_manager(input)
-    expect(@bitmap.error).to be nil
-  end
-
-
 
 end
