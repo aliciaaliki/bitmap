@@ -7,23 +7,23 @@ class Validation
     [x, y].any?{ |a| a.to_i > MAX || a.to_i < MIN}
   end
 
-  def self.isCapitalChar?(x)
+  def self.capital_char?(x)
     !x.match(/[^A-Z]/) unless x.to_i == x
   end
 
-  def self.valid_I_sequence?(x, y)
-    isNumber?([x, y])
+  def self.valid_image_sequence?(x, y)
+    number?([x, y])
   end
 
-  def self.valid_L_sequence?(x, y, c)
-    isNumber?([x,y]) && isCapitalChar?(c)
+  def self.valid_colour_sequence?(x, y, c)
+    number?([x,y]) && capital_char?(c)
   end
 
-  def self.valid_V_H_sequence?(x, r1, r2, c)
-    isNumber?([x, r1, r2]) && isCapitalChar?(c)
+  def self.valid_vertical_horizontal_sequence?(x, r1, r2, c)
+    number?([x, r1, r2]) && capital_char?(c)
   end
 
-  def self.isNumber?(array)
+  def self.number?(array)
     array.all?{ |a| a.to_i == a }
   end
 

@@ -12,19 +12,19 @@ class Error < StandardError
     new("Image's size is #{image.matrix_x}x#{image.matrix_y}. Try again!")
   end
 
-  def self.not_valid_I_command
+  def self.not_valid_create_command
     new("It's not a valid I command.")
   end
 
-  def self.not_valid_L_command
+  def self.not_valid_colour_command
     new("It's not a valid L command.")
   end
 
-  def self.not_valid_V_command
+  def self.not_valid_vertical_command
     new("It's not a valid V command.")
   end
 
-  def self.not_valid_H_command
+  def self.not_valid_horizontal_command
     new("It's not a valid H command.")
   end
 
