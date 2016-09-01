@@ -16,7 +16,7 @@ class Image
   def show_image
     @matrix.each do |row|
       row.each do |cell|
-        print cell
+        print cell + " "
       end
       STDOUT.puts
     end
