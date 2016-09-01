@@ -1,7 +1,7 @@
 module Commands
   class ShowHelp
     
-    def self.show_help
+    def self.perform
       STDOUT.puts "? - Help 
                     I M N - Create a new M x N image with all pixels coloured white (O).
                     C - Clears the table, setting all pixels to white (O).

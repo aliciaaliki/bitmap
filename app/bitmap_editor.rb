@@ -25,7 +25,7 @@ class BitmapEditor
     if RECOGNISED_INPUT.include?(command)
       case command
       when '?'
-        Commands::ShowHelp.show_help
+        Commands::ShowHelp.perform
       when 'X'
         exit_console
       else
@@ -45,20 +45,20 @@ class BitmapEditor
   #########
 
   def image_process(command, sequenceOfCommand)
-    @image = Commands::CreateImage.create(*sequenceOfCommand) if command == 'I'
+    @image = Commands::CreateImage.perform(*sequenceOfCommand) if command == 'I'
     raise Error.no_image unless @image
 
     case command         
     when 'L'
-      @image = Commands::ColourPixel.colour(@image, *sequenceOfCommand)
+      @image = Commands::ColourPixel.perform(@image, *sequenceOfCommand)
     when 'V'
-      @image = Commands::ColourVertical.colour_vertical(@image, *sequenceOfCommand)
+      @image = Commands::ColourVertical.perform(@image, *sequenceOfCommand)
     when 'H'
-      @image = Commands::ColourHorizontal.colour_horizontal(@image, *sequenceOfCommand)
+      @image = Commands::ColourHorizontal.perform(@image, *sequenceOfCommand)
     when 'S'
-      Commands::ShowImage.show(@image)
+      Commands::ShowImage.perform(@image)
     when 'C'
-      @image = Commands::ClearImage.clear(@image)
+      @image = Commands::ClearImage.perform(@image)
     end
   end
 

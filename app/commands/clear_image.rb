@@ -1,7 +1,7 @@
 module Commands
   class ClearImage
 
-    def self.clear(image)
+    def self.perform(image)
       image.clear_image
     end
 

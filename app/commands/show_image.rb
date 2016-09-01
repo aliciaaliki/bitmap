@@ -1,7 +1,7 @@
 module Commands
   class ShowImage
 
-    def self.show(image)
+    def self.perform(image)
       image.show_image
     end
 

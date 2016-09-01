@@ -1,7 +1,7 @@
 module Commands
   class ColourHorizontal
 
-    def self.colour_horizontal(image, from_column, to_column, row, colour)
+    def self.perform(image, from_column, to_column, row, colour)
     	raise Error.image_size_error(image) unless Validation.horizontal_within_range?(image, from_column, to_column, row)
     	raise Error.not_valid_horizontal_command unless Validation.valid_vertical_horizontal_sequence?(from_column, to_column, row, colour)
     	
