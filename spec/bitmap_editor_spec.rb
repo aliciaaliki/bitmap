@@ -34,6 +34,12 @@ describe 'Bitmap_Editor' do
     bitmap.command_manager(input)
   end
 
+  it "returns error when calling #fill_are method and there is no image" do
+    input = "F 1 4 W"
+    expect(STDOUT).to receive(:puts).with("#{Error.no_image}#{"\n"}Press ? to show help.")
+    bitmap.command_manager(input)
+  end
+
   it "returns error when calling #show method and there is no image" do
     input = "S"
     expect(STDOUT).to receive(:puts).with("#{Error.no_image}#{"\n"}Press ? to show help.")

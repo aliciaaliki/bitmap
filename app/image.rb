@@ -43,4 +43,42 @@ class Image
     self
   end
 
+  def fill_area(x, y, colour)
+    target_colour = @matrix[y-1][x-1]
+    return if colour == target_colour
+
+    colour_pixel(x, y, colour) 
+    
+    fill_area(x, y-1, colour) if valid_north?(x, y, target_colour)
+    fill_area(x+1, y, colour) if valid_east?(x, y, target_colour)
+    fill_area(x, y+1, colour) if valid_south?(x, y, target_colour)
+    fill_area(x-1, y, colour) if valid_west?(x, y, target_colour)
+
+    self
+  end
+
+  def valid_north?(x, y, target_colour)
+    valid_x?(x-1) && valid_y?(y-2) && @matrix[y-2][x-1] == target_colour
+  end
+
+  def valid_east?(x, y, target_colour)
+    valid_x?(x) && valid_y?(y-1) && @matrix[y-1][x] == target_colour
+  end
+
+  def valid_south?(x, y, target_colour)
+    valid_x?(x-1) && valid_y?(y) && @matrix[y][x-1] == target_colour
+  end
+
+  def valid_west?(x, y, target_colour)
+    valid_x?(x-2) && valid_y?(y-1) && @matrix[y-1][x-2] == target_colour
+  end
+
+  def valid_x?(number)
+    number >= 0 && number < matrix_x
+  end
+
+  def valid_y?(number)
+    number >= 0 && number < matrix_y
+  end
+
 end

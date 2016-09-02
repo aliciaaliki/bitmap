@@ -52,6 +52,25 @@ describe 'Image' do
     expect(image_matrix).to eq expected_image_matrix
   end
 
+  # F X Y C
+  it "fills the area with the colour" do
+    expected_image_matrix = [['W', 'W', 'W', 'W', 'W'], ['W', 'W', 'W', 'W', 'W'], ['W', 'W', 'W', 'W', 'W'], ['W', 'W', 'W', 'W', 'W'], ['W', 'W', 'W', 'W', 'W'], ['W', 'W', 'W', 'W', 'W']]
+    image.fill_area(2,3,'W')
+
+    expect(image_matrix).to eq expected_image_matrix
+  end
+
+  # F X Y C
+  it "fills the area with the colour" do
+    expected_image_matrix = [['W', 'W', 'W', 'W', 'W'], ['W', 'C', 'A', 'A', 'A'], ['W', 'C', 'O', 'O', 'O'], ['W', 'C', 'O', 'O', 'O'], ['W', 'C', 'B', 'B', 'B'], ['W', 'W', 'W', 'W', 'W']]
+    image.add_colour_horizontal(2,5,2,'A')
+    image.add_colour_horizontal(2,5,5,'B')
+    image.add_colour_vertical(2,2,5,'C')
+    image.fill_area(1,4,'W')
+
+    expect(image_matrix).to eq expected_image_matrix
+  end
+
   # C - Clears the table, setting all pixels to white (O)
   it "clears all the image" do
     expected_image_matrix = [['O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O']]

@@ -2,10 +2,9 @@ Dir["./app/commands/*.rb"].each {|file| require file }
 require './app/error'
 require './app/validation'
 
-
 class BitmapEditor
 
-  RECOGNISED_INPUT = %w(I L V H S C ? X)
+  RECOGNISED_INPUT = %w(I L V H F S C ? X)
 
   def run
     @running = true
@@ -55,6 +54,8 @@ class BitmapEditor
       @image = Commands::ColourVertical.perform(@image, *sequenceOfCommand)
     when 'H'
       @image = Commands::ColourHorizontal.perform(@image, *sequenceOfCommand)
+    when 'F'
+      @image = Commands::FillArea.perform(@image, *sequenceOfCommand)
     when 'S'
       Commands::ShowImage.perform(@image)
     when 'C'

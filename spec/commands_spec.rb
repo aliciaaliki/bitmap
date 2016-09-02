@@ -8,7 +8,7 @@ describe 'Commands' do
     allow(STDOUT).to receive(:puts)
   end
 
-  describe "Commands::CreateImage.create" do
+  describe "Commands::CreateImage.perform" do
     it "validates valid CreateImage input successfully" do
       expect { Commands::CreateImage.perform(6, 7) }.to_not raise_error
     end
@@ -26,7 +26,7 @@ describe 'Commands' do
     end
   end
 
-  describe "Commands::ColourPixel.colour" do
+  describe "Commands::ColourPixel.perform" do
     it "validates ColourPixel input successfully" do
       expect { Commands::ColourPixel.perform(image, 2, 3, "B") }.to_not raise_error
     end
@@ -44,7 +44,7 @@ describe 'Commands' do
     end
   end
 
-  describe "Commands::ColourVertical.colour_vertical" do
+  describe "Commands::ColourVertical.perform" do
     it "validates V input successfully" do
       expect { Commands::ColourVertical.perform(image, 2, 3, 6, "X") }.to_not raise_error
     end
@@ -62,7 +62,7 @@ describe 'Commands' do
     end
   end
 
-  describe "Commands::ColourHorizontal.colour_horizontal" do
+  describe "Commands::ColourHorizontal.perform" do
     it "validates H input successfully" do
       expect { Commands::ColourHorizontal.perform(image, 2, 1, 6, "W") }.to_not raise_error
     end
@@ -77,6 +77,24 @@ describe 'Commands' do
 
     it "validates invalid H sequence with error about image's size" do
       expect { Commands::ColourHorizontal.perform(image, 22, 33, 44, "B") }.to raise_error("#{Error.image_size_error(image)}")
+    end
+  end
+
+  describe "Commands::FillArea.perform" do
+    it "validates F input successfully" do
+      expect { Commands::FillArea.perform(image, 1, 4, "W") }.to_not raise_error
+    end
+
+    it "validates invalid F sequence with error" do
+      expect { Commands::FillArea.perform(image, 2, 3, 40) }.to raise_error("#{Error.not_valid_colour_command}")
+    end
+
+    it "validates invalid F sequence with error about arguments input" do
+      expect { Commands::FillArea.perform(image, 40) }.to raise_error(ArgumentError)
+    end
+
+    it "validates invalid F sequence with error about image's size" do
+      expect { Commands::FillArea.perform(image, 22, 33, "B") }.to raise_error("#{Error.image_size_error(image)}")
     end
   end
 
